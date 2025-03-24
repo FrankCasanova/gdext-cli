@@ -2,7 +2,7 @@
 
 # gdext-cli
 
-A CLI tool to generate Godot-Rust projects and scenes.
+A CLI tool to generate Godot-Rust projects and scripts.
 
 ## Overview
 
@@ -11,7 +11,7 @@ A CLI tool to generate Godot-Rust projects and scenes.
 ## Features
 
 - **Project Initialization**: Quickly bootstrap a new Godot-Rust project with the necessary directory structure and configuration files
-- **Script BoilerPlate Generation**: Generate Rust code for new scenes with the appropriate Godot node types
+- **Script BoilerPlate Generation**: Generate Rust code for new script to bind the appropriate Godot node types
 
 ## Installation
 
@@ -32,10 +32,10 @@ gdext-cli startproject
 
 This will create the necessary directories and files for a new Godot-Rust project.
 
-### Create a new scene
+### Create a new script
 
 ```bash
-gdext-cli scene --name player --typenode CharacterBody2D
+gdext-cli script --name player --typenode CharacterBody2D
 ```
 
 This command generates a new script with:
@@ -69,18 +69,18 @@ OPTIONS:
 
 SUBCOMMANDS:
     startproject    Initialize a new Godot-Rust project
-    scene           Generate a new scene with the given name and node type
+    script           Generate a new script with the given name and node type
     help            Print this message or the help of the given subcommand(s)
 ```
 
-### Scene Command
+### Script Command
 
 ```
 USAGE:
     gdext-cli scene [OPTIONS] --name <NAME> --typenode <TYPENODE>
 
 OPTIONS:
-    --name <NAME>          The name of the scene (snake_case for file, PascalCase for struct)
+    --name <NAME>          The name of the script (snake_case for file, PascalCase for struct)
     --typenode <TYPENODE>  The Godot node type (e.g., CharacterBody3D)
 ```
 
@@ -89,13 +89,13 @@ OPTIONS:
 ### Creating a player character
 
 ```bash
-gdext-cli scene player CharacterBody2D
+gdext-cli script player CharacterBody2D
 ```
 
 ### Creating a UI element
 
 ```bash
-gdext-cli scene main_menu Control
+gdext-cli script main_menu Control
 ```
 
 ## License

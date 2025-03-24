@@ -3,7 +3,7 @@ use anyhow::Result;
 use heck::ToUpperCamelCase;
 use std::fs;
 
-/// Generates a new Rust source file for a Godot scene with the given name and node type.
+/// Generates a new Rust source file for a Godot node with the given name and node type.
 /// 
 /// # Arguments
 ///
