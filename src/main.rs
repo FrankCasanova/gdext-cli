@@ -23,9 +23,9 @@ struct Cli {
 enum Commands {
     /// Initialize a new Godot-Rust project
     Startproject,
-    /// Generate a new scene with the given name and node type
-    Scene {
-        /// The name of the scene (snake_case for file, PascalCase for struct)
+    /// Generate a new script with the given name and node type
+    Script {
+        /// The name of the script (snake_case for file, PascalCase for struct)
         name: String,
         /// The Godot node type (e.g., CharacterBody3D)
         typenode: String,
@@ -42,7 +42,7 @@ fn main() -> Result<()> {
 
     match cli.command {
         Commands::Startproject => handle_startproject(),
-        Commands::Scene { name, typenode } => handle_script(&name, &typenode),
+        Commands::Script { name, typenode } => handle_script(&name, &typenode),
     }
 }
 
