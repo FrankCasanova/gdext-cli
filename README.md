@@ -8,6 +8,8 @@ A CLI tool to generate Godot-Rust projects and scripts.
 
 `gdext-cli` simplifies the process of creating and managing Godot game projects that use Rust as their scripting language via [godot-rust](https://github.com/godot-rust/gdext). It automates common tasks like project initialization and script creation.
 
+![gdext-cli demo](https://s6.gifyu.com/images/bzgAk.gif)
+
 ## Features
 
 - **Project Initialization**: Quickly bootstrap a new Godot-Rust project with the necessary directory structure and configuration files
