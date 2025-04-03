@@ -29,7 +29,7 @@ cargo install --path .
 ### Initialize a new Godot-Rust project
 
 ```bash
-gdext-cli startproject
+gdext-cli startproject --script example-script --name example-game-name
 ```
 
 This will create the necessary directories and files for a new Godot-Rust project.
@@ -79,7 +79,7 @@ SUBCOMMANDS:
 
 ```
 USAGE:
-    gdext-cli scene [OPTIONS] --name <NAME> --typenode <TYPENODE>
+    gdext-cli script [OPTIONS] --name <NAME> --typenode <TYPENODE>
 
 OPTIONS:
     --name <NAME>          The name of the script (snake_case for file, PascalCase for struct)

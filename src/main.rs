@@ -22,7 +22,10 @@ struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     /// Initialize a new Godot-Rust project
-    Startproject,
+    Startproject{
+        script: String,
+        name: String,
+    },
     /// Generate a new script with the given name and node type
     Script {
         /// The name of the script (snake_case for file, PascalCase for struct)
@@ -41,7 +44,7 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Startproject => handle_startproject(),
+        Commands::Startproject {script,name} => handle_startproject(&script, &name),
         Commands::Script { name, typenode } => handle_script(&name, &typenode),
     }
 }
