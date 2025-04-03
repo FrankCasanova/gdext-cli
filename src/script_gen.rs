@@ -50,19 +50,24 @@ pub fn handle_script(name: &str, typenode: &str) -> Result<()> {
             capitalized
         })
         .collect::<String>();
+    let interface_name: String = format!("I{node_type}");
 
     // Generate scene code
     let code = format!(
         r#"use godot::prelude::*;
-use godot::classes::{node_type};
+use godot::classes::{{{node_type}, {interface_name}}};
 
 #[derive(GodotClass)]
 #[class(init, base={node_type})]
 pub struct {struct_name} {{
     base: Base<{node_type}>
 }}
+
+#[godot_api]
+impl {interface_name} for {struct_name}  {{}}
 "#,
         node_type = node_type,
+        interface_name = interface_name, // Use the node type exactly as provided by user
         struct_name = struct_name
     );
 
