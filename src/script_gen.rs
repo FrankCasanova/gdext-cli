@@ -1,7 +1,7 @@
 //third-party modules
 use anyhow::Result;
-use heck::ToUpperCamelCase;
 use std::fs;
+use capitalize::Capitalize;
 
 /// Generates a new Rust source file for a Godot node with the given name and node type.
 /// 
@@ -26,35 +26,43 @@ pub fn handle_script(name: &str, typenode: &str) -> Result<()> {
     fs::create_dir_all("src")?;
 
     // Convert name to appropriate cases (only for the Rust struct/module)
-    let mod_name: String = name.to_lowercase();       // snake_case for file/mod
-    let struct_name: String = name.to_upper_camel_case(); // PascalCase for struct
+    let mod_name = name.to_lowercase().replace("-", "_"); // snake_case for mod
+    let name_struct_words: Vec<&str> = name.split('-').collect();      // snake_case for file/mod
+    let struct_name = name_struct_words
+        .iter()
+        .map(|word| 
+            word.capitalize())
+                .collect::<Vec<String>>()
+                .join(""); // PascalCase for struct
 
     // Use the node type exactly as provided by user
-    let node_type: &str = typenode;
-    let interface_name: String = format!("I{}", node_type);
+    let node_type = typenode
+        .split('-')
+        .map(|word| {
+            let mut capitalized = word.capitalize();
+            // Check if last character is 'd' and capitalize it
+            if let Some(last_char) = capitalized.chars().last() {
+                if last_char == 'd' {
+                    let len = capitalized.len();
+                    capitalized.replace_range(len-1..len, "D");
+                }
+            }
+            capitalized
+        })
+        .collect::<String>();
 
     // Generate scene code
     let code = format!(
         r#"use godot::prelude::*;
 use godot::classes::{node_type};
-use godot::classes::{interface_name};
 
 #[derive(GodotClass)]
-#[class(base={node_type})]
+#[class(init, base={node_type})]
 pub struct {struct_name} {{
     base: Base<{node_type}>
 }}
-
-#[godot_api]
-impl {interface_name} for {struct_name} {{
-    fn init(base: Base<{node_type}>) -> Self {{
-        godot_print!("{struct_name} initialized");
-        Self {{ base }}
-    }}
-}}
 "#,
         node_type = node_type,
-        interface_name = interface_name,
         struct_name = struct_name
     );
 

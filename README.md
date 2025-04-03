@@ -8,7 +8,6 @@ A CLI tool to generate Godot-Rust projects and scripts.
 
 `gdext-cli` simplifies the process of creating and managing Godot game projects that use Rust as their scripting language via [godot-rust](https://github.com/godot-rust/gdext). It automates common tasks like project initialization and script creation.
 
-![gdext-cli demo](https://s6.gifyu.com/images/bzgAk.gif)
 
 ## Features
 
@@ -37,27 +36,12 @@ This will create the necessary directories and files for a new Godot-Rust projec
 ### Create a new script
 
 ```bash
-gdext-cli script --name player --typenode CharacterBody2D
+gdext-cli script --name player-name-example --typenode character-body-2d
 ```
 
 This command generates a new script with:
 - A file named `player.rs` in the `src` directory
 - A Rust struct named `Player` that extends the `CharacterBody2D` node type
-
-## Node Type Format Requirements
-
-**Important:** When specifying the `--typenode` parameter, you must use the exact PascalCase format as used in the Godot API. The CLI cannot reliably determine the correct capitalization for all node types due to Godot's specific naming conventions.
-
-For example:
-- Use `CharacterBody2D` (not `characterbody2d` or `Character_Body_2D`)
-- Use `RigidBody3D` (not `rigidbody3d` or `Rigidbody3D`)
-- Use `Control` (not `control`)
-- Use `AnimationPlayer` (not `animationplayer` or `Animation_Player`)
-
-Incorrect capitalization will result in compilation errors when your Rust code attempts to reference the Godot types.
-
-For a complete list of Godot node types with their correct capitalization, refer to the [official Godot documentation](https://docs.godotengine.org/en/stable/classes/index.html).
-
 
 ## Command Reference
 
@@ -91,13 +75,13 @@ OPTIONS:
 ### Creating a player character
 
 ```bash
-gdext-cli script player CharacterBody2D
+gdext-cli script main-player character-body-2d
 ```
 
 ### Creating a UI element
 
 ```bash
-gdext-cli script main_menu Control
+gdext-cli script main-menu control
 ```
 
 ## License
