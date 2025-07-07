@@ -7,6 +7,8 @@ use script_gen::handle_script;
 mod script_gen;
 use startproject_gen::handle_startproject;
 mod startproject_gen;
+use template_gen::handle_template;
+mod template_gen;
 
 
 #[derive(Parser)]
@@ -33,6 +35,10 @@ enum Commands {
         /// The Godot node type (e.g., CharacterBody3D)
         typenode: String,
     },
+    /// Create a new project from a template
+    Template{
+        name: String,
+    },
 }
 
 /// The entry point of the CLI tool.
@@ -46,6 +52,7 @@ fn main() -> Result<()> {
     match cli.command {
         Commands::Startproject {script,name} => handle_startproject(&script, &name),
         Commands::Script { name, typenode } => handle_script(&name, &typenode),
+        Commands::Template {name } => handle_template(&name),
     }
 }
 
