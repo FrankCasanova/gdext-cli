@@ -74,6 +74,14 @@ fn generate_gdextension(name: &str, godot_project_root: &str) -> String {
     let name_snake_case = &name_snake_case.replace("-", "_");
     let rust_target_path: PathBuf = [godot_project_root, "target"].iter().collect();
 
+    // Sanitize OS-specific path
+    let rust_target_str = &rust_target_path
+        .to_str()
+        .unwrap()
+        .split(std::path::MAIN_SEPARATOR_STR)
+        .collect::<Vec<&str>>()
+        .join("/");
+
     format!(
         r#"[configuration]
 entry_symbol = "gdext_rust_init"
@@ -93,7 +101,7 @@ web.debug.wasm32 = "res://{rust_project}/wasm32-unknown-emscripten/debug/{name}.
 web.release.wasm32 = "res://{rust_project}/wasm32-unknown-emscripten/release/{name}.wasm"
 "#,
         name = name_snake_case,
-        rust_project = rust_target_path.to_str().unwrap(),
+        rust_project = rust_target_str,
     )
 }
 
