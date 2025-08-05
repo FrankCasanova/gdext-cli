@@ -2,8 +2,8 @@
 use anyhow::Result;
 
 //own modules
-use crate::startproject_gen::handle_startproject;
 use crate::script_gen::handle_script;
+use crate::startproject_gen::handle_startproject;
 
 /// Creates a new project from a template.
 ///
@@ -19,7 +19,7 @@ use crate::script_gen::handle_script;
 /// error. If the `godot-rust` crate cannot be found, this function will
 /// return an error.
 pub fn handle_template(name: &str) -> Result<()> {
-    handle_startproject(name, name)?;
+    handle_startproject(name, name, &None)?;
     handle_script("player", "character-body-2d")?;
     Ok(())
 }
