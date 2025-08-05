@@ -1,7 +1,7 @@
 //third-party modules
 use anyhow::Result;
 use capitalize::Capitalize;
-use path_calculate::Calculate;
+use relative_path::PathExt;
 use std::{env, fs, path::PathBuf};
 
 /// Initializes a new Godot-Rust project.
@@ -29,11 +29,10 @@ pub fn handle_startproject(script: &str, name: &str, godot_dir: &Option<PathBuf>
     let godot_project_dir = godot_dir.as_ref().map(|p| p.as_path()).unwrap_or(&cwd);
 
     // Use current working directory to build a relative path to godot project directory
-    let binding = cwd.related_to(godot_project_dir)?;
-    let gdextension_root = binding.to_str().unwrap();
+    let godot_project_dir = cwd.join(godot_project_dir).canonicalize()?;
+    let gdextension_root = &cwd.relative_to(&godot_project_dir)?.into_string();
 
-    let mut gdextension_path = godot_project_dir.to_path_buf();
-    gdextension_path.push(gdextension_filename);
+    let gdextension_file = godot_project_dir.to_path_buf().join(gdextension_filename);
 
     // Create lib.rs
     let lib_rs = generate_lib_rs(script);
@@ -41,7 +40,7 @@ pub fn handle_startproject(script: &str, name: &str, godot_dir: &Option<PathBuf>
 
     // Create rust.gdextension
     let gdextension_content: String = generate_gdextension(name, gdextension_root);
-    fs::write(gdextension_path, gdextension_content)?;
+    fs::write(gdextension_file, gdextension_content)?;
 
     // Create Cargo.toml
     let cargo_toml = generate_cargo_toml_file(name);
