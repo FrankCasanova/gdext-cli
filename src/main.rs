@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 //third-party modules
 use anyhow::Result;
 use clap::{Parser, Subcommand};
@@ -10,12 +12,13 @@ mod startproject_gen;
 use template_gen::handle_template;
 mod template_gen;
 
-
 #[derive(Parser)]
 #[command(name = "gdext-cli")]
 #[command(about = "A CLI tool to generate Godot-Rust projects", long_about = None)]
 #[command(version)]
-#[command(author = "Frank Casanova\n<frankcasanova.info@gmail.com>\n<https://github.com/FrankCasanova>\n<https://linkedin.com/in/frankcasanova->")]
+#[command(
+    author = "Frank Casanova\n<frankcasanova.info@gmail.com>\n<https://github.com/FrankCasanova>\n<https://linkedin.com/in/frankcasanova->"
+)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -24,9 +27,12 @@ struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     /// Initialize a new Godot-Rust project
-    Startproject{
+    Startproject {
         script: String,
         name: String,
+        /// The path to the Godot project directory
+        #[arg(long)]
+        godot_dir: Option<PathBuf>,
     },
     /// Generate a new script with the given name and node type
     Script {
@@ -36,9 +42,7 @@ enum Commands {
         typenode: String,
     },
     /// Create a new project from a template
-    Template{
-        name: String,
-    },
+    Template { name: String },
 }
 
 /// The entry point of the CLI tool.
@@ -50,11 +54,12 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
 
     match cli.command {
-        Commands::Startproject {script,name} => handle_startproject(&script, &name),
+        Commands::Startproject {
+            script,
+            name,
+            godot_dir,
+        } => handle_startproject(&script, &name, &godot_dir),
         Commands::Script { name, typenode } => handle_script(&name, &typenode),
-        Commands::Template {name } => handle_template(&name),
+        Commands::Template { name } => handle_template(&name),
     }
 }
-
-
-

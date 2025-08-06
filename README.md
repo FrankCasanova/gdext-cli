@@ -76,6 +76,15 @@ gdext-cli startproject example-game example-game-name
 ```
 This will create the necessary directories and files for a new Godot-Rust project.
 
+You can indicate your godot project directory by using the `--godot-dir` option:
+
+```bash
+# pwd -> ~/game_example/rust/
+gdext-cli startproject --godot-dir ../godot example-game example-game-name
+```
+
+Keep in mind the Godot project directory must exist previous to executing this command.
+
 ### Create a new script
 
 ```bash
@@ -100,6 +109,22 @@ SUBCOMMANDS:
     startproject    Initialize a new Godot-Rust project
     script           Generate a new script with the given name and node type
     help            Print this message or the help of the given subcommand(s)
+```
+
+### Start Project Command
+
+```
+Initialize a new Godot-Rust project
+
+Usage: gdext-cli startproject [OPTIONS] <SCRIPT> <NAME>
+
+Arguments:
+  <SCRIPT>  
+  <NAME>    
+
+Options:
+      --godot-dir <GODOT_DIR>  The path to the Godot project directory
+  -h, --help                   Print help
 ```
 
 ### Script Command
