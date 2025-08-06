@@ -26,11 +26,18 @@ pub fn handle_startproject(script: &str, name: &str, godot_dir: &Option<PathBuf>
     // Setup directories
     let cwd = env::current_dir()?;
     let gdextension_filename = "rust.gdextension";
-    let godot_project_dir = godot_dir.as_ref().map(|p| p.as_path()).unwrap_or(&cwd);
+    
+    // Handle godot_dir path with proper canonicalization
+    let godot_project_dir = match godot_dir {
+        Some(path) => path.canonicalize()?,
+        None => cwd.clone()
+    };
 
-    // Use current working directory to build a relative path to godot project directory
-    let godot_project_dir = cwd.join(godot_project_dir).canonicalize()?;
-    let gdextension_root = &cwd.relative_to(&godot_project_dir)?.into_string();
+    // Calculate relative path from godot project to rust project
+    let gdextension_root = cwd.canonicalize()?
+        .relative_to(&godot_project_dir)?
+        .into_string()
+        .replace('\\', "/"); // Normalize path separators
 
     let gdextension_file = godot_project_dir.to_path_buf().join(gdextension_filename);
 
@@ -39,7 +46,7 @@ pub fn handle_startproject(script: &str, name: &str, godot_dir: &Option<PathBuf>
     fs::write("src/lib.rs", lib_rs)?;
 
     // Create rust.gdextension
-    let gdextension_content: String = generate_gdextension(name, gdextension_root);
+    let gdextension_content: String = generate_gdextension(name, &gdextension_root);
     fs::write(gdextension_file, gdextension_content)?;
 
     // Create Cargo.toml
