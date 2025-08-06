@@ -26,18 +26,19 @@ pub fn handle_startproject(script: &str, name: &str, godot_dir: &Option<PathBuf>
     // Setup directories
     let cwd = env::current_dir()?;
     let gdextension_filename = "rust.gdextension";
-    
+
     // Handle godot_dir path with proper canonicalization
     let godot_project_dir = match godot_dir {
         Some(path) => path.canonicalize()?,
-        None => cwd.clone()
+        None => cwd.clone(),
     };
 
     // Calculate relative path from godot project to rust project
-    let gdextension_root = cwd.canonicalize()?
+    let gdextension_root = cwd
+        .canonicalize()?
         .relative_to(&godot_project_dir)?
         .into_string()
-        .replace('\\', "/"); // Normalize path separators
+        .replace(std::path::MAIN_SEPARATOR_STR, "/"); // Normalize path separators
 
     let gdextension_file = godot_project_dir.to_path_buf().join(gdextension_filename);
 
