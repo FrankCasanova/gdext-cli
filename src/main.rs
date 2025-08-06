@@ -30,6 +30,7 @@ enum Commands {
     Startproject {
         script: String,
         name: String,
+        /// The path to the Godot project directory
         #[arg(long)]
         godot_dir: Option<PathBuf>,
     },
